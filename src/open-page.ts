@@ -8,7 +8,7 @@ export async function openPage(
   browser: Browser,
   url: string,
   attempts = 0,
-): Promise<Page | undefined> {
+): Promise<Page | void> {
   try {
     logger(`Open page ${url}. Attempts: ${attempts}`, 'process')
 

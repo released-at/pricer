@@ -13,9 +13,12 @@ const availableStores = [
   'nintendo',
 ]
 
-export async function prepareDataToScrap() {
+export async function prepareDataToScrap(
+  fetchGames = loadGames,
+  fetchGame = loadGame,
+) {
   try {
-    const games = await loadGames()
+    const games = await fetchGames()
 
     if (!games) throw new Error(`Can't load games`)
 
@@ -30,7 +33,7 @@ export async function prepareDataToScrap() {
     // Because we should request every game
     // TODO: change an approach
     const gamesWithDetails = await map(sortedGames, async ({ release_id }) => {
-      const game = await loadGame(release_id)
+      const game = await fetchGame(release_id)
 
       if (!game) throw new Error(`Can't load game with id: ${release_id}`)
 
@@ -56,6 +59,7 @@ export async function prepareDataToScrap() {
           .map(store => {
             const needFixStore = fixedStores.find(game => game.id === id)
             if (needFixStore) {
+              // For stores without prices from rawg.io
               const fixedStoreUrl = needFixStore.stores.find(
                 st => st.type === store.store.slug,
               )?.url
@@ -90,6 +94,9 @@ export async function prepareDataToScrap() {
 
     return stores
   } catch (e) {
+    logger(`Can't prepare data to scrap`, 'error')
+
     console.error(e)
+    process.exit(1)
   }
 }

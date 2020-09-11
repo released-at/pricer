@@ -47,6 +47,8 @@ export async function loadGame(
       process.exit(1)
     }
 
-    loadGame(id, attempts + 1)
+    const game = await loadGame(id, attempts + 1)
+
+    return game
   }
 }

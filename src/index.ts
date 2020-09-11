@@ -11,8 +11,6 @@ async function main() {
     `Start scrapping ${format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSxxx")}`,
   )
 
-  logger('Start scrapping', 'process')
-
   try {
     const data = await scrap()
 
@@ -30,7 +28,6 @@ async function main() {
     })
 
     if (response.ok) {
-      console.log('Stores successfully updated')
       logger(`Stores successfully updated`, 'success')
     } else {
       throw new Error(
@@ -42,6 +39,7 @@ async function main() {
   } catch (e) {
     logger(`Stores update was failed`, 'error')
     console.error(e)
+  } finally {
     process.exit(1)
   }
 }

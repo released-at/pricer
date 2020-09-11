@@ -3,7 +3,7 @@ import { sendMessage } from './telegram-bot'
 import { BROWSER, HEADLESS } from './config'
 import { Browser, Browsers } from './types'
 
-export async function runBrowser(attempts = 0): Promise<Browser | undefined> {
+export async function runBrowser(attempts = 0): Promise<Browser | void> {
   const options: LaunchOptions = { headless: HEADLESS }
   let browser
 
